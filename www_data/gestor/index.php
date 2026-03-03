@@ -14,8 +14,6 @@ function listarArchivos($dir, $base_dir, &$resultados = array()) {
     $archivos = scandir($dir);
     foreach ($archivos as $key => $value) {
         $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
-        
-        // Excluir el propio directorio del gestor y archivos ocultos
         if ($value == "gestor" || $value[0] == ".") continue;
 
         if (!is_dir($path)) {
@@ -30,7 +28,18 @@ function listarArchivos($dir, $base_dir, &$resultados = array()) {
 // Procesar la subida
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['archivos'])) {
     $total_subidos = 0;
-    $errores = 0;
+    $errores_detalles = [];
+
+    // Mapeo de errores de PHP
+    $php_errors = [
+        UPLOAD_ERR_INI_SIZE   => 'El archivo excede upload_max_filesize en php.ini.',
+        UPLOAD_ERR_FORM_SIZE  => 'El archivo excede MAX_FILE_SIZE en el formulario HTML.',
+        UPLOAD_ERR_PARTIAL    => 'El archivo se subió solo parcialmente.',
+        UPLOAD_ERR_NO_FILE    => 'No se subió ningún archivo.',
+        UPLOAD_ERR_NO_TMP_DIR => 'Falta la carpeta temporal.',
+        UPLOAD_ERR_CANT_WRITE => 'No se pudo escribir en el disco.',
+        UPLOAD_ERR_EXTENSION  => 'Una extensión de PHP detuvo la subida.'
+    ];
 
     foreach ($_FILES['archivos']['name'] as $i => $name) {
         if ($_FILES['archivos']['error'][$i] === UPLOAD_ERR_OK) {
@@ -40,24 +49,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['archivos'])) {
             
             $directorio_padre = dirname($ruta_final);
             if (!is_dir($directorio_padre)) {
-                mkdir($directorio_padre, 0775, true);
+                if (!@mkdir($directorio_padre, 0777, true)) {
+                    $errores_detalles[] = "Error al crear la carpeta: {$directorio_padre}";
+                    continue;
+                }
             }
 
             if (move_uploaded_file($_FILES['archivos']['tmp_name'][$i], $ruta_final)) {
                 $total_subidos++;
             } else {
-                $errores++;
+                $errores_detalles[] = "Error al mover el archivo: {$name}. Verificá los permisos de escritura en la raíz.";
             }
+        } else {
+            $err_code = $_FILES['archivos']['error'][$i];
+            $errores_detalles[] = "Archivo '{$name}': " . ($php_errors[$err_code] ?? "Error desconocido (Código {$err_code})");
         }
     }
 
-    if ($total_subidos > 0) {
+    if ($total_subidos > 0 && empty($errores_detalles)) {
         $mensaje = "✅ Se subieron {$total_subidos} archivos correctamente.";
         $clase_alerta = 'exito';
-        if ($errores > 0) $mensaje .= " (Hubo {$errores} errores).";
     } else {
-        $mensaje = "❌ Error: No se pudo subir ningún archivo.";
-        $clase_alerta = 'error';
+        $mensaje = "⚠️ Resultado de la operación:<br>Subidos: {$total_subidos}<br>Errores:<br>• " . implode("<br>• ", $errores_detalles);
+        $clase_alerta = $total_subidos > 0 ? 'exito' : 'error';
     }
 }
 
@@ -80,7 +94,7 @@ $lista_archivos = listarArchivos($directorio_subida, realpath($directorio_subida
         .upload-box { border: 2px dashed #444; padding: 15px; border-radius: 8px; text-align: center; }
         label { display: block; margin-bottom: 10px; font-weight: bold; cursor: pointer; }
         button { background: var(--pri); color: white; border: none; padding: 12px 30px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; font-size: 1.1rem; }
-        .alerta { padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 5px solid; }
+        .alerta { padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 5px solid; word-break: break-all; }
         .exito { background: rgba(46, 204, 113, 0.1); border-color: var(--success); color: var(--success); }
         .error { background: rgba(231, 76, 60, 0.1); border-color: var(--danger); color: var(--danger); }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
