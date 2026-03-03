@@ -6,11 +6,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
     libpng-dev \
+    libzip-dev \
+    zip \
+    unzip \
     ca-certificates \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd mysqli \
-    && docker-php-ext-enable gd mysqli \
+    && docker-php-ext-install -j$(nproc) gd mysqli zip \
+    && docker-php-ext-enable gd mysqli zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instalamos el CLIENTE de Docker (Docker CLI) desde el binario estático
@@ -20,9 +23,14 @@ RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.
 RUN a2enmod rewrite headers
 
 # Creamos el grupo docker con el GID dinámico para que coincida con el host
-# Y agregamos www-data a ese grupo
+# Si el grupo ya existe (ej: GID 100), lo usamos; si no, lo creamos.
 ARG DOCKER_GID=126
-RUN groupadd -g ${DOCKER_GID} docker_host && usermod -aG docker_host www-data
+RUN if getent group ${DOCKER_GID}; then \
+        group_name=$(getent group ${DOCKER_GID} | cut -d: -f1); \
+        usermod -aG $group_name www-data; \
+    else \
+        groupadd -g ${DOCKER_GID} docker_host && usermod -aG docker_host www-data; \
+    fi
 
 # Ajustamos permisos de la web
 RUN chown -R www-data:www-data /var/www/html

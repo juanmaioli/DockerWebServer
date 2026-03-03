@@ -6,7 +6,7 @@ services:
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - ./db_data:/var/lib/mysql
-    restart: always
+    restart: ${RESTART_POLICY}
     environment:
       - MARIADB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MARIADB_DATABASE=${MYSQL_DATABASE}
@@ -30,7 +30,7 @@ services:
       args:
         DOCKER_GID: ${DOCKER_GID:-126}
     container_name: web_server
-    restart: always
+    restart: ${RESTART_POLICY}
     depends_on:
       web_db:
         condition: service_healthy
@@ -63,7 +63,7 @@ services:
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: phpmyadmin_web
-    restart: always
+    restart: ${RESTART_POLICY}
     environment:
       - PMA_HOST=web_db
       - PMA_ARBITRARY=1
@@ -74,6 +74,17 @@ services:
           memory: 256M
     ports:
       - 5088:80
+  # OpenVSCode Server: Run VS Code in the browser with server-side computation. Perfect for remote development.
+  openvscode:
+    image: gitpod/openvscode-server:latest
+    container_name: openvscode
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ./www_data:/home/workspace
+    ports:
+      - 5000:3000
+    restart: ${RESTART_POLICY}
 
 volumes:
   db_data:
