@@ -4,21 +4,20 @@
  * Ubicación: www_data/gestor/index.php
  */
 
-$directorio_subida = realpath(__DIR__ . '/../uploads') . DIRECTORY_SEPARATOR;
+$directorio_subida = realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR;
 $mensaje = '';
 $clase_alerta = '';
 
-// Asegurar que uploads existe
-if (!is_dir($directorio_subida)) {
-    mkdir($directorio_subida, 0775, true);
-}
-
-// Función para listar archivos de forma recursiva
+// Función para listar archivos de forma recursiva (excluyendo el gestor)
 function listarArchivos($dir, $base_dir, &$resultados = array()) {
     if (!is_dir($dir)) return [];
     $archivos = scandir($dir);
     foreach ($archivos as $key => $value) {
         $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+        
+        // Excluir el propio directorio del gestor y archivos ocultos
+        if ($value == "gestor" || $value[0] == ".") continue;
+
         if (!is_dir($path)) {
             $resultados[] = str_replace($base_dir . DIRECTORY_SEPARATOR, '', $path);
         } else if ($value != "." && $value != "..") {
@@ -113,19 +112,19 @@ $lista_archivos = listarArchivos($directorio_subida, realpath($directorio_subida
         </form>
 
         <section class="card">
-            <h2>📜 Explorador de /uploads</h2>
+            <h2>📜 Explorador de la Raíz (/www_data)</h2>
             <table>
                 <thead>
                     <tr><th>Ruta / Nombre</th><th>Acción</th></tr>
                 </thead>
                 <tbody>
                     <?php if (empty($lista_archivos)): ?>
-                        <tr><td colspan="2" style="text-align:center; padding: 30px; color:#666;">No hay archivos en el servidor.</td></tr>
+                        <tr><td colspan="2" style="text-align:center; padding: 30px; color:#666;">No hay archivos en la raíz.</td></tr>
                     <?php else: ?>
                         <?php foreach ($lista_archivos as $archivo): ?>
                             <tr>
                                 <td><code><?php echo htmlspecialchars($archivo); ?></code></td>
-                                <td><a href="../uploads/<?php echo $archivo; ?>" target="_blank">Abrir 👀</a></td>
+                                <td><a href="../<?php echo $archivo; ?>" target="_blank">Abrir 👀</a></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
