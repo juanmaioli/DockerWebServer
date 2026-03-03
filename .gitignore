@@ -1,3 +1,7 @@
 .env
 db_data/
 GEMINI.md
+www_data/.cache/
+www_data/.openvscode-server/
+**/.DS_Store
+*.log

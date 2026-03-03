@@ -74,7 +74,7 @@ services:
           memory: 256M
     ports:
       - 5088:80
-  # OpenVSCode Server: Run VS Code in the browser with server-side computation. Perfect for remote development.
+
   openvscode:
     image: gitpod/openvscode-server:latest
     container_name: openvscode
@@ -85,6 +85,11 @@ services:
     ports:
       - 5000:3000
     restart: ${RESTART_POLICY}
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
 
 volumes:
   db_data:
