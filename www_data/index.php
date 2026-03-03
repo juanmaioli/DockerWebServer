@@ -17,7 +17,7 @@
         <h1>🐳 WebServer Docker</h1>
         <p>El entorno LAMP está funcionando correctamente.</p>
         
-        <a href="gestor.php" class="btn">📂 Abrir Gestor de Archivos</a>
+        <a href="gestor/" class="btn">📂 Abrir Gestor de Archivos</a>
         <br>
         <a href="?info=1" style="color: #555; margin-top: 20px; display: inline-block;">Ver PHP Info</a>
 
