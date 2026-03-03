@@ -19,9 +19,10 @@ RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.
 # Habilitamos módulos de Apache
 RUN a2enmod rewrite headers
 
-# Creamos el grupo docker con el GID correcto (126) para que coincida con el host
+# Creamos el grupo docker con el GID dinámico para que coincida con el host
 # Y agregamos www-data a ese grupo
-RUN groupadd -g 126 docker_host && usermod -aG docker_host www-data
+ARG DOCKER_GID=126
+RUN groupadd -g ${DOCKER_GID} docker_host && usermod -aG docker_host www-data
 
 # Ajustamos permisos de la web
 RUN chown -R www-data:www-data /var/www/html

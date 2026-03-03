@@ -17,13 +17,18 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    # ports:
-    #   - "3306:3306"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1G
 
   web_server:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        DOCKER_GID: ${DOCKER_GID:-126}
     container_name: web_server
     restart: always
     depends_on:
@@ -31,7 +36,11 @@ services:
         condition: service_healthy
     volumes:
       - ./www_data:/var/www/html
-      - ./apache_data:/etc/apache2
+      - ./apache_data/sites-available:/etc/apache2/sites-available
+      - ./apache_data/conf-available:/etc/apache2/conf-available
+      - ./apache_data/mods-available:/etc/apache2/mods-available
+      - ./apache_data/ports.conf:/etc/apache2/ports.conf
+      - ./apache_data/apache2.conf:/etc/apache2/apache2.conf
       - ./php_data/php.ini:/usr/local/etc/php/php.ini
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -42,6 +51,11 @@ services:
       - DB_PORT=3306
       - DASHBOARD_USER=${DASHBOARD_USER}
       - DASHBOARD_PASS=${DASHBOARD_PASS}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 512M
     ports:
       - "5080:80"
       - "5443:443"
@@ -53,6 +67,11 @@ services:
     environment:
       - PMA_HOST=web_db
       - PMA_ARBITRARY=1
+    deploy:
+      resources:
+        limits:
+          cpus: '0.10'
+          memory: 256M
     ports:
       - 5088:80
 
