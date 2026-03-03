@@ -1,0 +1,60 @@
+services:
+  web_db:
+    # Versión LTS de MariaDB para mayor estabilidad y soporte a largo plazo
+    image: mariadb:10.11
+    container_name: mariadb_db_web
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - ./db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MYSQL_DATABASE}
+      - MARIADB_USER=${MYSQL_USER}
+      - MARIADB_PASSWORD=${MYSQL_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "--password=${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # ports:
+    #   - "3306:3306"
+
+  web_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web_server
+    restart: always
+    depends_on:
+      web_db:
+        condition: service_healthy
+    volumes:
+      - ./www_data:/var/www/html
+      - ./apache_data:/etc/apache2
+      - ./php_data/php.ini:/usr/local/etc/php/php.ini
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DB_SERVER=web_db
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_PORT=3306
+      - DASHBOARD_USER=${DASHBOARD_USER}
+      - DASHBOARD_PASS=${DASHBOARD_PASS}
+    ports:
+      - "5080:80"
+      - "5443:443"
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin_web
+    restart: always
+    environment:
+      - PMA_HOST=web_db
+      - PMA_ARBITRARY=1
+    ports:
+      - 5088:80
+
+volumes:
+  db_data:
