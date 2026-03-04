@@ -90,14 +90,16 @@ foreach ($files as $file) {
             <span class="badge bg-success px-3 py-2">Apache 2.4</span>
         </div>
         <hr class="text-primary">
-        <div class="text-center mb-2">
+        <div class="text-center">
         <a href="?info=1" class="btn btn-outline-secondary btn-sm">ℹ️ Ver Información del Servidor (phpinfo)</a>
         </div>
-
+</div>
+</div>
     <!-- PHP Info Overlay -->
     <?php if (isset($_GET['info'])): ?>
-        <div class="row mb-2">
-            <div class="col-12">
+        <div class="row mt-2 mb-2">
+            <div class="col-1"></div>
+            <div class="col-10">
                 <div class="p-4 bg-white text-dark rounded shadow-sm border overflow-auto" style="max-height: 500px;">
                     <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
                         <h4 class="mb-0 fw-bold">System Information</h4>
@@ -111,11 +113,9 @@ foreach ($files as $file) {
                     </div>
                 </div>
             </div>
+            <div class="col-1"></div>
         </div>
     <?php endif; ?>
-</div>
-</div>
-
 
 <div class="container mt-3 pb-2">
     <?php if ($mensaje): ?>
@@ -133,6 +133,9 @@ foreach ($files as $file) {
                     <h5 class="mb-0 fw-bold">📜 Explorador de Archivos</h5>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="themeSelector" checked>
+                    <div class="text-center">
+                        <a href="?info=1" class="btn btn-outline-secondary btn-sm">ℹ️ Ver Información del Servidor (phpinfo)</a>
+                    </div>" checked>
                         <label class="form-check-label small" for="themeSelector">🌙 Modo</label>
                     </div>
                 </div>
@@ -199,10 +202,7 @@ foreach ($files as $file) {
                             </button>
                         </div>
                     </form>
-                    <hr class="my-4">
-                    <div class="text-center">
-                        <a href="?info=1" class="btn btn-outline-secondary btn-sm">ℹ️ Ver Información del Servidor (phpinfo)</a>
-                    </div>
+
                 </div>
             </div>
         </div>
