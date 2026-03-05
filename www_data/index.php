@@ -64,7 +64,10 @@ foreach ($files as $file) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐳 WebServer Docker - Dashboard</title>
+    <title>WebServer Docker</title>
+
+    <link rel='icon' href='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐳</text></svg>'>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -126,16 +129,13 @@ foreach ($files as $file) {
     <?php endif; ?>
 
     <!-- Explorador de Archivos (Ancho completo) -->
-    <div class="row mb-5">
+    <div class="row mt-3 mb-5">
         <div class="col-12">
             <div class="card shadow-lg border-0">
-                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                <div class="card-header d-flex justify-content-between align-items-center py-3">
                     <h5 class="mb-0 fw-bold">📜 Explorador de Archivos</h5>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" id="themeSelector" checked>
-                    <div class="text-center">
-                        <a href="?info=1" class="btn btn-outline-secondary btn-sm">ℹ️ Ver Información del Servidor (phpinfo)</a>
-                    </div>" checked>
                         <label class="form-check-label small" for="themeSelector">🌙 Modo</label>
                     </div>
                 </div>
@@ -217,16 +217,23 @@ foreach ($files as $file) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const themeSelector = document.getElementById('themeSelector');
+    const themeLabel = document.querySelector('label[for="themeSelector"]');
     const htmlElement = document.documentElement;
+
+    const updateLabel = (theme) => {
+        themeLabel.textContent = theme === 'dark' ? '🌙 Oscuro' : '☀️ Claro';
+    };
 
     const savedTheme = localStorage.getItem('theme') || 'dark';
     htmlElement.setAttribute('data-bs-theme', savedTheme);
     themeSelector.checked = savedTheme === 'dark';
+    updateLabel(savedTheme);
 
     themeSelector.addEventListener('change', () => {
         const theme = themeSelector.checked ? 'dark' : 'light';
         htmlElement.setAttribute('data-bs-theme', theme);
         localStorage.setItem('theme', theme);
+        updateLabel(theme);
     });
 </script>
 </body>
