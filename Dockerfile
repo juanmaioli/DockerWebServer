@@ -20,7 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.3.1.tgz | tar -xzC /usr/local/bin --strip-components=1 docker/docker
 
 # Habilitamos módulos de Apache
-RUN a2enmod rewrite headers ssl && a2ensite default-ssl
+RUN a2enmod rewrite headers ssl proxy proxy_http proxy_wstunnel && \
+    a2ensite default-ssl pma-ssl code-ssl
 
 # Creamos el grupo docker con el GID dinámico para que coincida con el host
 # Si el grupo ya existe (ej: GID 100), lo usamos; si no, lo creamos.
