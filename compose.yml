@@ -39,6 +39,7 @@ services:
       - ./apache_data/sites-available:/etc/apache2/sites-available
       - ./apache_data/conf-available:/etc/apache2/conf-available
       - ./apache_data/mods-available:/etc/apache2/mods-available
+      - ./apache_data/ssl:/etc/apache2/ssl
       - ./apache_data/ports.conf:/etc/apache2/ports.conf
       - ./apache_data/apache2.conf:/etc/apache2/apache2.conf
       - ./php_data/php.ini:/usr/local/etc/php/php.ini
@@ -57,7 +58,6 @@ services:
           cpus: '0.25'
           memory: 512M
     ports:
-      - "5080:80"
       - "5443:443"
 
   phpmyadmin:
