@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Instalamos el CLIENTE de Docker (Docker CLI) desde el binario estático
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.3.1.tgz | tar -xzC /usr/local/bin --strip-components=1 docker/docker
 
+# Copiamos las configuraciones de sitios para que a2ensite funcione durante el build
+COPY apache_data/sites-available/ /etc/apache2/sites-available/
+
 # Habilitamos módulos de Apache
 RUN a2enmod rewrite headers ssl proxy proxy_http proxy_wstunnel && \
     a2ensite default-ssl pma-ssl code-ssl
