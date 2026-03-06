@@ -5,4 +5,4 @@ www_data/.cache/
 www_data/.openvscode-server/
 **/.DS_Store
 *.log
-*.pdf
+.eslintrc.json
