@@ -1,8 +1,8 @@
 services:
-  web_db:
+  webserver_mariadb:
     # Versión LTS de MariaDB para mayor estabilidad y soporte a largo plazo
     image: mariadb:10.11
-    container_name: mariadb_db_web
+    container_name: webserver_mariadb
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - ./db_data:/var/lib/mysql
@@ -23,16 +23,16 @@ services:
           cpus: '0.50'
           memory: 1G
 
-  web_server:
+  webserver:
     build:
       context: .
       dockerfile: Dockerfile
       args:
         DOCKER_GID: ${DOCKER_GID:-126}
-    container_name: web_server
+    container_name: webserver
     restart: ${RESTART_POLICY}
     depends_on:
-      web_db:
+      webserver_mariadb:
         condition: service_healthy
     volumes:
       - ./www_data:/var/www/html
@@ -45,7 +45,7 @@ services:
       - ./php_data/php.ini:/usr/local/etc/php/php.ini
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DB_SERVER=web_db
+      - DB_SERVER=webserver_mariadb
       - DB_USER=${MYSQL_USER}
       - DB_PASS=${MYSQL_PASSWORD}
       - DB_NAME=${MYSQL_DATABASE}
@@ -58,14 +58,15 @@ services:
           cpus: '0.25'
           memory: 512M
     ports:
+      - "5080:80"
       - "5443:443"
 
-  phpmyadmin:
+  webserver_phpmyadmin:
     image: phpmyadmin:latest
-    container_name: phpmyadmin_web
+    container_name: webserver_phpmyadmin
     restart: ${RESTART_POLICY}
     environment:
-      - PMA_HOST=web_db
+      - PMA_HOST=webserver_mariadb
       - PMA_ARBITRARY=1
     deploy:
       resources:
@@ -75,9 +76,9 @@ services:
     ports:
       - 5088:80
 
-  openvscode:
+  webserver_openvscode:
     image: gitpod/openvscode-server:latest
-    container_name: openvscode
+    container_name: webserver_openvscode
     environment:
       - TZ=${TZ}
     volumes:

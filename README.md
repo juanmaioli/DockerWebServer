@@ -43,6 +43,7 @@ docker compose logs -f
 ## 4. 🌐 Acceso a Servicios
 | Servicio | URL Local | Puerto Host |
 | :--- | :--- | :--- |
+| **Aplicación Web (HTTP)** | [http://localhost:5080](http://localhost:5080) | `5080` |
 | **Aplicación Web (HTTPS)** | [https://localhost:5443](https://localhost:5443) | `5443` |
 | **phpMyAdmin** | [http://localhost:5088](http://localhost:5088) | `5088` |
 | **OpenVSCode Server** | [http://localhost:5000](http://localhost:5000) | `5000` |
