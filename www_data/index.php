@@ -76,7 +76,7 @@ foreach ($files as $file) {
         .list-group-item:hover { background-color: var(--bs-tertiary-bg); transition: 0.2s; }
         .card-gestor { border: 2px dashed var(--bs-border-color); transition: 0.3s; }
         .card-gestor:hover { border-color: var(--bs-primary); }
-        .btn-upload { font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-upload { text-transform: uppercase; letter-spacing: 1px; }
         .php-info-container table { width: 100% !important; border-collapse: collapse; }
     </style>
 </head>
@@ -197,8 +197,8 @@ foreach ($files as $file) {
                             </div>
                         </div>
                         <div class="mt-4 text-center">
-                            <button type="submit" class="btn btn-primary px-2 py-1 btn-upload shadow">
-                                🚀 Iniciar Subida Masiva
+                            <button type="submit" class="btn btn-primary btn-upload shadow">
+                                🚀 Iniciar Subida
                             </button>
                         </div>
                     </form>
