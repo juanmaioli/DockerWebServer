@@ -1,8 +1,7 @@
 .env
 db_data/
 GEMINI.md
-www_data/.cache/
-www_data/.openvscode-server/
+www_data/
 **/.DS_Store
 *.log
 .eslintrc.json

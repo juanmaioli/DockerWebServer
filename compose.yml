@@ -76,21 +76,21 @@ services:
     ports:
       - 5088:80
 
-  webserver_openvscode:
-    image: gitpod/openvscode-server:latest
-    container_name: webserver_openvscode
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ./www_data:/home/workspace
-    ports:
-      - 5000:3000
-    restart: ${RESTART_POLICY}
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 1G
+  # webserver_openvscode:
+  #   image: gitpod/openvscode-server:latest
+  #   container_name: webserver_openvscode
+  #   environment:
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ./www_data:/home/workspace
+  #   ports:
+  #     - 5000:3000
+  #   restart: ${RESTART_POLICY}
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '1.0'
+  #         memory: 1G
 
 volumes:
   db_data:

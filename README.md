@@ -11,7 +11,6 @@ El sistema está diseñado para ofrecer un entorno de desarrollo robusto, versio
 - **Dashboard Unificado:** Explorador, gestor de archivos y `phpinfo` integrados en `index.php`.
 - **Interfaz Moderna:** Potenciado con **Bootstrap 5.3** y soporte nativo para **Modo Oscuro**.
 - **Gestión de Archivos Pro:** Soporte para subida masiva de archivos y **carpetas completas** (preservando la estructura).
-- **IDE Integrado:** Acceso a **OpenVSCode Server** para editar código directamente en el navegador.
 
 ## 2. 🛠️ Tecnologías Principales
 | Componente | Versión / Detalle | Descripción |
@@ -48,7 +47,6 @@ docker compose logs -f
 | **Random Image Gallery** | [https://localhost:5443/rnd_img/](https://localhost:5443/rnd_img/) | `5443` |
 | **Speedtest App** | [https://localhost:5443/speedtest/](https://localhost:5443/speedtest/) | `5443` |
 | **phpMyAdmin** | [http://localhost:5088](http://localhost:5088) | `5088` |
-| **OpenVSCode Server** | [http://localhost:5000](http://localhost:5000) | `5000` |
 
 > **Nota:** El dominio comodín configurado internamente es `*.webserver.docker`.
 
