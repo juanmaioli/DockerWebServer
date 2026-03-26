@@ -22,7 +22,8 @@ services:
         limits:
           cpus: '0.50'
           memory: 1G
-
+    ports:
+      - "3306:3306"
   webserver:
     build:
       context: .
@@ -58,7 +59,7 @@ services:
           cpus: '0.25'
           memory: 512M
     ports:
-      - "5080:80"
+      # - "5080:80"
       - "5443:443"
 
   webserver_phpmyadmin:
