@@ -8,6 +8,7 @@ services:
       - ./db_data:/var/lib/mysql
     restart: ${RESTART_POLICY}
     environment:
+      - TZ=America/Argentina/Buenos_Aires
       - MARIADB_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MARIADB_DATABASE=${MYSQL_DATABASE}
       - MARIADB_USER=${MYSQL_USER}
@@ -46,6 +47,7 @@ services:
       - ./php_data/php.ini:/usr/local/etc/php/php.ini
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
+      - TZ=America/Argentina/Buenos_Aires
       - DB_SERVER=webserver_mariadb
       - DB_USER=${MYSQL_USER}
       - DB_PASS=${MYSQL_PASSWORD}
@@ -67,6 +69,7 @@ services:
     container_name: webserver_phpmyadmin
     restart: ${RESTART_POLICY}
     environment:
+      - TZ=America/Argentina/Buenos_Aires
       - PMA_HOST=webserver_mariadb
       - PMA_ARBITRARY=1
     deploy:
@@ -81,6 +84,7 @@ services:
   #   image: gitpod/openvscode-server:latest
   #   container_name: webserver_openvscode
   #   environment:
+      - TZ=America/Argentina/Buenos_Aires
   #     - TZ=${TZ}
   #   volumes:
   #     - ./www_data:/home/workspace
