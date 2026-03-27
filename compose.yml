@@ -84,7 +84,7 @@ services:
   #   image: gitpod/openvscode-server:latest
   #   container_name: webserver_openvscode
   #   environment:
-      - TZ=America/Argentina/Buenos_Aires
+  #     - TZ=America/Argentina/Buenos_Aires
   #     - TZ=${TZ}
   #   volumes:
   #     - ./www_data:/home/workspace
