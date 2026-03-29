@@ -23,8 +23,8 @@ services:
         limits:
           cpus: '0.50'
           memory: 1G
-    ports:
-      - "3306:3306"
+#    ports:
+#      - "3306:3306"
   webserver:
     build:
       context: .

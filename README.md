@@ -17,7 +17,7 @@ El sistema está diseñado para ofrecer un entorno de desarrollo robusto, versio
 | :--- | :--- | :--- |
 | 🐳 **Docker** | Compose V2 | Orquestación completa de contenedores. |
 | 🐘 **PHP** | 8.4 (Apache) | Con extensiones `mysqli`, `gd` y `zip`. |
-| 🗄️ **MariaDB** | 10.11 LTS | Base de datos relacional persistente. |
+| 🗄️ **MariaDB** | 10.11 LTS | Base de datos relacional persistente (aislada del host). |
 | 🚀 **Apache** | 2.4 | Configurado con `ssl`, `rewrite` y `headers`. |
 | 🛡️ **Docker CLI** | v27.3.1 | Acceso al socket del host desde el contenedor. |
 
