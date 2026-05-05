@@ -20,6 +20,7 @@ El sistema está diseñado para ofrecer un entorno de desarrollo robusto, versio
 | 🗄️ **MariaDB** | 10.11 LTS | Base de datos relacional persistente (aislada del host). |
 | 🚀 **Apache** | 2.4 | Configurado con `ssl`, `rewrite` y `headers`. |
 | 🛡️ **Docker CLI** | v27.3.1 | Acceso al socket del host desde el contenedor. |
+| 📡 **Redes** | arp-scan | Escaneo de dispositivos en la red local. |
 
 ## 3. ⚙️ Comandos de Ejecución
 Gestión del ciclo de vida de los contenedores mediante Docker Compose:
@@ -46,6 +47,7 @@ docker compose logs -f
 | **Aplicación Web (HTTPS)** | [https://localhost:5443](https://localhost:5443) | `5443` |
 | **Random Image Gallery** | [https://localhost:5443/rnd_img/](https://localhost:5443/rnd_img/) | `5443` |
 | **Speedtest App** | [https://localhost:5443/speedtest/](https://localhost:5443/speedtest/) | `5443` |
+| **Local Devices App** | [https://localhost:5443/localdevices/](https://localhost:5443/localdevices/) | `5443` |
 | **phpMyAdmin** | [http://localhost:5088](http://localhost:5088) | `5088` |
 
 > **Nota:** El dominio comodín configurado internamente es `*.webserver.docker`.
